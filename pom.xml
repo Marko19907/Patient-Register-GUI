@@ -37,7 +37,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.3</version>
                 <configuration>
-                    <mainClass><!-- path to main class --></mainClass>
+                    <mainClass>no.ntnu.mappe2.marko19907.patientregister.PatientRegisterGUI</mainClass>
                 </configuration>
             </plugin>
         </plugins>
