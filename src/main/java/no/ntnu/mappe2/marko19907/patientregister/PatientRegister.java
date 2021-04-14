@@ -6,6 +6,9 @@ import java.util.List;
 /**
  * The class PatientRegister represents a register that can hold Patients
  * It is responsible for adding, removing and returning a list of the Patients
+ *
+ * @author Marko
+ * @version 14-04-2021
  */
 public class PatientRegister
 {

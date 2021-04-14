@@ -14,6 +14,7 @@ public class Patient
     private String lastName;
     private String socialSecurityNumber;
     private String generalPractitioner;
+    private String diagnosis;
 
     /**
      * Constructor for Patient objects
@@ -32,6 +33,8 @@ public class Patient
         this.lastName = lastName;
         this.socialSecurityNumber = socialSecurityNumber;
         this.generalPractitioner = generalPractitioner;
+
+        this.diagnosis = "";
     }
 
     /**
@@ -127,6 +130,26 @@ public class Patient
     {
         if (generalPractitioner != null) {
             this.generalPractitioner = generalPractitioner;
+        }
+    }
+
+    /**
+     * Return the patient's diagnosis
+     * @return The patient's diagnosis as a String
+     */
+    public String getDiagnosis()
+    {
+        return this.diagnosis;
+    }
+
+    /**
+     * Sets the patient's diagnosis
+     * @param diagnosis The patient's diagnosis to set
+     */
+    public void setDiagnosis(String diagnosis)
+    {
+        if (diagnosis != null) {
+            this.diagnosis = diagnosis;
         }
     }
 
