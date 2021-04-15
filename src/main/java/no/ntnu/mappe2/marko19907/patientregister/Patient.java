@@ -6,7 +6,7 @@ package no.ntnu.mappe2.marko19907.patientregister;
  * the social security number and the name of the patient's general practitioner.
  *
  * @author Marko
- * @version 14-04-2021
+ * @version 15-04-2021
  */
 public class Patient
 {
@@ -144,7 +144,7 @@ public class Patient
 
     /**
      * Sets the patient's diagnosis
-     * @param diagnosis The patient's diagnosis to set
+     * @param diagnosis The patient's diagnosis to set, can not be null
      */
     public void setDiagnosis(String diagnosis)
     {
