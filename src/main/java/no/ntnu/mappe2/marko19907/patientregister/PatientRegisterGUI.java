@@ -24,10 +24,19 @@ import java.util.Arrays;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 14-04-2021
+ * @version 15-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
+    private final Controller controller;
+
+    /**
+     * PatientRegisterGUI constructor
+     */
+    public PatientRegisterGUI()
+    {
+        this.controller = new Controller();
+    }
 
     public static void main(String[] args)
     {
@@ -44,6 +53,8 @@ public class PatientRegisterGUI extends Application
         primaryStage.setTitle("Patient Register");
         primaryStage.setMinWidth(300);
         primaryStage.setMinHeight(200);
+
+        primaryStage.setOnCloseRequest(this.controller::doQuit);
 
         Scene scene = new Scene(root, 600, 400, Color.WHITE);
         primaryStage.setScene(scene);
@@ -124,7 +135,7 @@ public class PatientRegisterGUI extends Application
         SeparatorMenuItem separator = new SeparatorMenuItem();
 
         MenuItem exitButton = new MenuItem("Exit");
-        exitButton.setOnAction(event -> System.out.println("Exit menu item clicked!"));
+        exitButton.setOnAction(this.controller::doQuit);
 
         fileMenu.getItems().addAll(importFromCVS, exportToCVS, separator, exitButton);
         return fileMenu;
