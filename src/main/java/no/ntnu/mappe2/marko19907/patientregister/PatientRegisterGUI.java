@@ -3,6 +3,10 @@ package no.ntnu.mappe2.marko19907.patientregister;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.Arrays;
 
 /**
  * Class PatientRegisterGUI represents the main window in the application.
@@ -30,6 +36,7 @@ public class PatientRegisterGUI extends Application
     public void start(Stage primaryStage)
     {
         BorderPane root = new BorderPane();
+        root.setTop(this.setupTopMenu());
         root.setCenter(this.setupCenterTable());
 
         primaryStage.setTitle("Patient Register");
@@ -77,11 +84,47 @@ public class PatientRegisterGUI extends Application
             }
         });
 
-        patientTableView.getColumns().addAll(nameColumn, lastNameColumn, socialSecurityNumberColumn,
-                generalPractitionerColumn, diagnosisColumn);
+        patientTableView.getColumns().addAll(Arrays.asList(nameColumn, lastNameColumn, socialSecurityNumberColumn,
+                generalPractitionerColumn, diagnosisColumn));
         //Set a default sort column
         patientTableView.getSortOrder().add(nameColumn);
 
         return patientTableView;
+    }
+
+    /**
+     * Returns an already top MenuBar
+     * @return An already top MenuBar
+     */
+    private MenuBar setupTopMenu()
+    {
+        MenuBar menuBar = new MenuBar();
+
+        menuBar.getMenus().add(this.setupFileMenu());
+
+        return menuBar;
+    }
+
+    /**
+     * Returns an already set-up file Menu
+     * @return An already set-up file Menu
+     */
+    private Menu setupFileMenu()
+    {
+        Menu fileMenu = new Menu("File");
+
+        MenuItem importFromCVS = new MenuItem("Import from .CVS");
+        importFromCVS.setOnAction(event -> System.out.println("Import from .CVS menu item clicked!"));
+
+        MenuItem exportToCVS = new MenuItem("Export to .CVS");
+        exportToCVS.setOnAction(event -> System.out.println("Export to .CVS menu item clicked!"));
+
+        SeparatorMenuItem separator = new SeparatorMenuItem();
+
+        MenuItem exitButton = new MenuItem("Exit");
+        exitButton.setOnAction(event -> System.out.println("Exit menu item clicked!"));
+
+        fileMenu.getItems().addAll(importFromCVS, exportToCVS, separator, exitButton);
+        return fileMenu;
     }
 }
