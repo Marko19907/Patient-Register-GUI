@@ -10,6 +10,8 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -100,7 +102,7 @@ public class PatientRegisterGUI extends Application
     {
         MenuBar menuBar = new MenuBar();
 
-        menuBar.getMenus().add(this.setupFileMenu());
+        menuBar.getMenus().addAll(this.setupFileMenu(), this.setupEditMenu());
 
         return menuBar;
     }
@@ -126,5 +128,29 @@ public class PatientRegisterGUI extends Application
 
         fileMenu.getItems().addAll(importFromCVS, exportToCVS, separator, exitButton);
         return fileMenu;
+    }
+
+    /**
+     * Returns an already set-up edit Menu
+     * @return An already set-up edit Menu
+     */
+    private Menu setupEditMenu()
+    {
+        Menu editMenu = new Menu("Edit");
+
+        MenuItem addNewPatient = new MenuItem("Add new Patient");
+        addNewPatient.setAccelerator(new KeyCodeCombination(KeyCode.A));
+        addNewPatient.setOnAction(event -> System.out.println("Add new Patient clicked!"));
+
+        MenuItem editSelectedPatient = new MenuItem("Edit Selected Patient");
+        editSelectedPatient.setAccelerator(new KeyCodeCombination(KeyCode.E));
+        editSelectedPatient.setOnAction(event -> System.out.println("Edit Selected Patient clicked!"));
+
+        MenuItem removeSelectedPatient = new MenuItem("Remove Selected Patient");
+        removeSelectedPatient.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
+        removeSelectedPatient.setOnAction(event -> System.out.println("Remove Selected Patient clicked!"));
+
+        editMenu.getItems().addAll(addNewPatient, editSelectedPatient, removeSelectedPatient);
+        return editMenu;
     }
 }
