@@ -1,6 +1,8 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class Controller
 {
     private final PatientRegister patientRegister;
+    private final ObservableList<Patient> patientObservableList;
 
     /**
      * Instantiates the controller.
@@ -24,7 +27,44 @@ public class Controller
     public Controller()
     {
         this.patientRegister = new PatientRegister();
+        this.patientObservableList = FXCollections.observableArrayList(this.patientRegister.getPatientList());
+
+        this.fillWithDemoPatients();
     }
+
+    /**
+     * Fills the register with demo data
+     */
+    private void fillWithDemoPatients()
+    {
+        this.patientRegister.addPatient(new Patient
+                ("Name1", "LastName1", "123", ""));
+        this.patientRegister.addPatient(new Patient
+                ("Name2", "LastName2", "321", "SpongeBob"));
+
+        this.updateObservableList();
+    }
+
+    /**
+     * Updates the observable list of patients with fresh values from the register
+     */
+    private void updateObservableList()
+    {
+        this.patientObservableList.setAll(this.patientRegister.getPatientList());
+    }
+
+    /**
+     * Returns an ObservableList of patients to show
+     * @return An ObservableList of patients to show
+     */
+    public ObservableList<Patient> getPatientObservableList()
+    {
+        return this.patientObservableList;
+    }
+
+    // -----------------------------------------------------------
+    //    DIALOGS
+    // -----------------------------------------------------------
 
     /**
      * Application exit dialog. A confirmation dialog that is displayed before exiting.

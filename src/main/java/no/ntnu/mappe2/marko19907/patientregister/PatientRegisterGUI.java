@@ -99,6 +99,7 @@ public class PatientRegisterGUI extends Application
 
         patientTableView.getColumns().addAll(Arrays.asList(nameColumn, lastNameColumn, socialSecurityNumberColumn,
                 generalPractitionerColumn, diagnosisColumn));
+        patientTableView.setItems(this.controller.getPatientObservableList());
         //Set a default sort column
         patientTableView.getSortOrder().add(nameColumn);
 
