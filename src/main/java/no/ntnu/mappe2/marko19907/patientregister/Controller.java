@@ -20,6 +20,7 @@ public class Controller
 {
     private final PatientRegister patientRegister;
     private final ObservableList<Patient> patientObservableList;
+    private Patient currentlySelectedPatient;
 
     /**
      * Instantiates the controller.
@@ -28,6 +29,7 @@ public class Controller
     {
         this.patientRegister = new PatientRegister();
         this.patientObservableList = FXCollections.observableArrayList(this.patientRegister.getPatientList());
+        this.currentlySelectedPatient = null;
 
         this.fillWithDemoPatients();
     }
@@ -60,6 +62,37 @@ public class Controller
     public ObservableList<Patient> getPatientObservableList()
     {
         return this.patientObservableList;
+    }
+
+    /**
+     * Deletes the currentlySelectedPatient Patient from the register if one is selected,
+     * shows a showPleaseSelectItemDialog() dialog otherwise
+     */
+    public void doDeletePatient()
+    {
+        if (this.currentlySelectedPatient == null) {
+            this.showPleaseSelectItemDialog();
+        }
+        else {
+            boolean deleteConfirmed = this.showDeleteConfirmationDialog();
+            if (deleteConfirmed) {
+                this.patientRegister.removePatient(this.currentlySelectedPatient);
+                this.currentlySelectedPatient = null;
+
+                this.updateObservableList();
+            }
+        }
+    }
+
+    /**
+     * Sets the currently selected patient in the table
+     * @param patient The patient to set as the currently selected patient, can not be null
+     */
+    public void setCurrentlySelectedPatient(Patient patient)
+    {
+        if (patient != null) {
+            this.currentlySelectedPatient = patient;
+        }
     }
 
     // -----------------------------------------------------------
@@ -100,6 +133,37 @@ public class Controller
                 + "2021" + "\n\n"
                 + "Running on Java " + System.getProperty("java.version")
                 + " with JavaFX version " + System.getProperty("javafx.version"));
+        alert.showAndWait();
+    }
+
+    /**
+     * Displays a delete confirmation dialog
+     * @return True if the user confirms the delete, false otherwise
+     */
+    private boolean showDeleteConfirmationDialog()
+    {
+        boolean deleteConfirmed = false;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Delete confirmation");
+        alert.setContentText("Are you sure you want to delete this patient?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()) {
+            deleteConfirmed = (result.get() == ButtonType.OK);
+        }
+        return deleteConfirmed;
+    }
+
+    /**
+     * Displays a warning dialog to warn the user to select an element from the list first
+     */
+    private void showPleaseSelectItemDialog()
+    {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Information");
+        alert.setHeaderText("No items selected");
+        alert.setContentText("No item is selected in the table. " + "\n"
+                + "Please select an item from the table first.");
         alert.showAndWait();
     }
 }

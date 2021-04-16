@@ -93,7 +93,8 @@ public class PatientRegisterGUI extends Application
         // set on left click action
         patientTableView.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
-                System.out.println("Table clicked!");
+                this.controller.setCurrentlySelectedPatient(
+                        patientTableView.getSelectionModel().getSelectedItem());
             }
         });
 
@@ -160,7 +161,7 @@ public class PatientRegisterGUI extends Application
 
         MenuItem removeSelectedPatient = new MenuItem("Remove Selected Patient");
         removeSelectedPatient.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
-        removeSelectedPatient.setOnAction(event -> System.out.println("Remove Selected Patient clicked!"));
+        removeSelectedPatient.setOnAction(event -> this.controller.doDeletePatient());
 
         editMenu.getItems().addAll(addNewPatient, editSelectedPatient, removeSelectedPatient);
         return editMenu;
