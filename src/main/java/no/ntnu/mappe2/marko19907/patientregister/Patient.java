@@ -19,11 +19,11 @@ public class Patient
     /**
      * Constructor for Patient objects
      */
-    public Patient(String firstName, String lastName, String socialSecurityNumber, String generalPractitioner)
+    public Patient(String firstName, String lastName, String socialSecurityNumber)
     {
-        if (firstName == null || lastName == null || socialSecurityNumber == null || generalPractitioner == null) {
+        if (firstName == null || lastName == null || socialSecurityNumber == null) {
             throw new IllegalArgumentException(
-                    "firstName, lastName, socialSecurityNumber or generalPractitioner can not be null!");
+                    "firstName, lastName or socialSecurityNumber can not be null!");
         }
         if (firstName.isBlank() || lastName.isBlank() || socialSecurityNumber.isBlank()) {
             throw new IllegalArgumentException(
@@ -32,8 +32,8 @@ public class Patient
         this.firstName = firstName;
         this.lastName = lastName;
         this.socialSecurityNumber = socialSecurityNumber;
-        this.generalPractitioner = generalPractitioner;
 
+        this.generalPractitioner = "";
         this.diagnosis = "";
     }
 

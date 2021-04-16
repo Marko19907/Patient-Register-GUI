@@ -39,10 +39,10 @@ public class Controller
      */
     private void fillWithDemoPatients()
     {
-        this.patientRegister.addPatient(new Patient
-                ("Name1", "LastName1", "123", ""));
-        this.patientRegister.addPatient(new Patient
-                ("Name2", "LastName2", "321", "SpongeBob"));
+        this.patientRegister.addPatient(new Patient("Name1", "LastName1", "123"));
+        Patient patient2 = new Patient("Name2", "LastName2", "321");
+        patient2.setGeneralPractitioner("SpongeBob");
+        this.patientRegister.addPatient(patient2);
 
         this.updateObservableList();
     }

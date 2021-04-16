@@ -67,7 +67,8 @@ public class PatientRegisterGUI extends Application
      * Returns up the table that contains the patients
      * @return An already set-up table that contains the patients
      */
-    private TableView<Patient> setupCenterTable() {
+    private TableView<Patient> setupCenterTable()
+    {
         TableView<Patient> patientTableView = new TableView<>();
         patientTableView.setPlaceholder(new Label("No patients to display"));
         patientTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
