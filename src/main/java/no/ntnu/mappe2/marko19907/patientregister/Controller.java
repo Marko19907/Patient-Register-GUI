@@ -12,7 +12,7 @@ import java.util.Optional;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 15-04-2021
+ * @version 16-04-2021
  */
 public class Controller
 {
@@ -45,5 +45,21 @@ public class Controller
                 event.consume();
             }
         }
+    }
+
+    /**
+     * Shows the About Dialog
+     */
+    public void doShowAboutDialog()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Patient Register App");
+        alert.setContentText("An application created by" + "\n"
+                + "Marko19907" + "\n"
+                + "2021" + "\n\n"
+                + "Running on Java " + System.getProperty("java.version")
+                + " with JavaFX version " + System.getProperty("javafx.version"));
+        alert.showAndWait();
     }
 }

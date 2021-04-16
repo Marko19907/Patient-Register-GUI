@@ -24,7 +24,7 @@ import java.util.Arrays;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 15-04-2021
+ * @version 16-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
@@ -113,7 +113,7 @@ public class PatientRegisterGUI extends Application
     {
         MenuBar menuBar = new MenuBar();
 
-        menuBar.getMenus().addAll(this.setupFileMenu(), this.setupEditMenu());
+        menuBar.getMenus().addAll(this.setupFileMenu(), this.setupEditMenu(), this.setupHelpMenu());
 
         return menuBar;
     }
@@ -163,5 +163,20 @@ public class PatientRegisterGUI extends Application
 
         editMenu.getItems().addAll(addNewPatient, editSelectedPatient, removeSelectedPatient);
         return editMenu;
+    }
+
+    /**
+     * Returns an already set-up help Menu
+     * @return An already set-up help Menu
+     */
+    private Menu setupHelpMenu()
+    {
+        Menu helpMenu = new Menu("Help");
+
+        MenuItem aboutMenuItem = new MenuItem("About");
+        aboutMenuItem.setOnAction(event -> this.controller.doShowAboutDialog());
+
+        helpMenu.getItems().add(aboutMenuItem);
+        return helpMenu;
     }
 }
