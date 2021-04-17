@@ -1,11 +1,17 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 import java.util.Optional;
 
@@ -14,7 +20,7 @@ import java.util.Optional;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 16-04-2021
+ * @version 17-04-2021
  */
 public class Controller
 {
@@ -95,6 +101,27 @@ public class Controller
         }
     }
 
+    /**
+     * Shows the New Patient Dialog
+     */
+    public void doAddNewPatientDialog()
+    {
+        this.doShowPatientDetailsDialog(1);
+    }
+
+    /**
+     * Shows the Edit Patient Dialog
+     */
+    public void doEditPatientDialog()
+    {
+        if (this.currentlySelectedPatient == null) {
+            this.showPleaseSelectItemDialog();
+        }
+        else {
+            this.doShowPatientDetailsDialog(2);
+        }
+    }
+
     // -----------------------------------------------------------
     //    DIALOGS
     // -----------------------------------------------------------
@@ -165,5 +192,94 @@ public class Controller
         alert.setContentText("No item is selected in the table. " + "\n"
                 + "Please select an item from the table first.");
         alert.showAndWait();
+    }
+
+    /**
+     * Shows the Patient details dialog
+     * @param mode If mode is 1, the method will create a new Patient and add it to the list
+     *             If mode is 2, the method will edit the currently selected patient
+     * @throws IllegalArgumentException if the given mode is invalid
+     */
+    private void doShowPatientDetailsDialog(int mode)
+    {
+        if ((mode != 1) && (mode != 2)) {
+            throw new IllegalArgumentException("Unsupported PatientDetailsDialog mode! " +
+                    "Valid modes are 1 and 2 . . .");
+        }
+
+        Dialog<Patient> patientDialog = new Dialog<>();
+        switch (mode) {
+            case 1:
+                patientDialog.setTitle("Add Patient");
+                break;
+
+            case 2:
+                patientDialog.setTitle("Edit Patient Details");
+                break;
+        }
+        patientDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 120, 10, 10));
+
+        TextField patientName = new TextField();
+        patientName.setPromptText("First name");
+
+        TextField patientLastName = new TextField();
+        patientLastName.setPromptText("Last name");
+
+        TextField socialSecurityNumber = new TextField();
+        socialSecurityNumber.setPromptText("Social security number");
+
+        if ((mode == 2) && (this.currentlySelectedPatient != null)) {
+            patientName.setText(this.currentlySelectedPatient.getFirstName());
+            patientLastName.setText(this.currentlySelectedPatient.getLastName());
+            socialSecurityNumber.setText(this.currentlySelectedPatient.getSocialSecurityNumber());
+        }
+
+        // Disable the OK Button if one of the TextFields is empty
+        BooleanBinding blankTextField = patientName.textProperty().isEmpty()
+            .or(patientLastName.textProperty().isEmpty())
+            .or(socialSecurityNumber.textProperty().isEmpty());
+        patientDialog.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(blankTextField);
+
+        grid.add(new Label("First name:"), 0, 0);
+        grid.add(patientName, 1, 0);
+        grid.add(new Label("Last name:"), 0, 1);
+        grid.add(patientLastName, 1, 1);
+        grid.add(new Label("Social security number:"), 0, 2);
+        grid.add(socialSecurityNumber, 1, 2);
+
+        patientDialog.getDialogPane().setContent(grid);
+        patientDialog.setResultConverter(button -> {
+            Patient result = null;
+            if (button == ButtonType.OK) {
+                result = new Patient(patientName.getText(), patientLastName.getText(),
+                        socialSecurityNumber.getText());
+            }
+            return result;
+        });
+
+        Optional<Patient> result = patientDialog.showAndWait();
+        if (result.isPresent()) {
+            switch (mode) {
+                case 1:
+                    Patient newPatient = result.get();
+                    this.patientRegister.addPatient(newPatient);
+                    break;
+
+                case 2:
+                    if (this.currentlySelectedPatient != null) {
+                        this.currentlySelectedPatient.setFirstName(patientName.getText());
+                        this.currentlySelectedPatient.setLastName(patientLastName.getText());
+                        this.currentlySelectedPatient.setSocialSecurityNumber(socialSecurityNumber.getText());
+                    }
+                    break;
+            }
+
+            this.updateObservableList();
+        }
     }
 }

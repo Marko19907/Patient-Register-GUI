@@ -24,7 +24,7 @@ import java.util.Arrays;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 16-04-2021
+ * @version 17-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
@@ -154,11 +154,11 @@ public class PatientRegisterGUI extends Application
 
         MenuItem addNewPatient = new MenuItem("Add new Patient");
         addNewPatient.setAccelerator(new KeyCodeCombination(KeyCode.A));
-        addNewPatient.setOnAction(event -> System.out.println("Add new Patient clicked!"));
+        addNewPatient.setOnAction(event -> this.controller.doAddNewPatientDialog());
 
         MenuItem editSelectedPatient = new MenuItem("Edit Selected Patient");
         editSelectedPatient.setAccelerator(new KeyCodeCombination(KeyCode.E));
-        editSelectedPatient.setOnAction(event -> System.out.println("Edit Selected Patient clicked!"));
+        editSelectedPatient.setOnAction(event -> this.controller.doEditPatientDialog());
 
         MenuItem removeSelectedPatient = new MenuItem("Remove Selected Patient");
         removeSelectedPatient.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
