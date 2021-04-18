@@ -20,7 +20,7 @@ import java.util.Optional;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 17-04-2021
+ * @version 18-04-2021
  */
 public class Controller
 {
@@ -208,15 +208,6 @@ public class Controller
         }
 
         Dialog<Patient> patientDialog = new Dialog<>();
-        switch (mode) {
-            case 1:
-                patientDialog.setTitle("Add Patient");
-                break;
-
-            case 2:
-                patientDialog.setTitle("Edit Patient Details");
-                break;
-        }
         patientDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -233,16 +224,30 @@ public class Controller
         TextField socialSecurityNumber = new TextField();
         socialSecurityNumber.setPromptText("Social security number");
 
-        if ((mode == 2) && (this.currentlySelectedPatient != null)) {
-            patientName.setText(this.currentlySelectedPatient.getFirstName());
-            patientLastName.setText(this.currentlySelectedPatient.getLastName());
-            socialSecurityNumber.setText(this.currentlySelectedPatient.getSocialSecurityNumber());
+        switch (mode) {
+            case 1:
+                patientDialog.setTitle("Add Patient");
+                break;
+            case 2:
+
+                if (this.currentlySelectedPatient != null) {
+                    patientDialog.setTitle("Edit Patient");
+
+                    patientName.setText(this.currentlySelectedPatient.getFirstName());
+                    patientLastName.setText(this.currentlySelectedPatient.getLastName());
+                    socialSecurityNumber.setText(this.currentlySelectedPatient.getSocialSecurityNumber());
+                }
+                break;
+            default:
+                // This should never occur due to the guard condition further up,
+                // adding anyway; defensive programming
+                throw new IllegalArgumentException("Unexpected mode: " + mode);
         }
 
         // Disable the OK Button if one of the TextFields is empty
         BooleanBinding blankTextField = patientName.textProperty().isEmpty()
-            .or(patientLastName.textProperty().isEmpty())
-            .or(socialSecurityNumber.textProperty().isEmpty());
+                .or(patientLastName.textProperty().isEmpty())
+                .or(socialSecurityNumber.textProperty().isEmpty());
         patientDialog.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(blankTextField);
 
         grid.add(new Label("First name:"), 0, 0);
@@ -277,6 +282,10 @@ public class Controller
                         this.currentlySelectedPatient.setSocialSecurityNumber(socialSecurityNumber.getText());
                     }
                     break;
+                default:
+                    // This should never occur due to the guard condition further up,
+                    // adding anyway; defensive programming
+                    throw new IllegalArgumentException("Unexpected mode: " + mode);
             }
 
             this.updateObservableList();
