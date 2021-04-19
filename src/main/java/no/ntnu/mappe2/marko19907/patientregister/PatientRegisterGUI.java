@@ -34,6 +34,7 @@ import java.util.Arrays;
 public class PatientRegisterGUI extends Application
 {
     private final Controller controller;
+    private final Label statusLabel;
 
     /**
      * PatientRegisterGUI constructor
@@ -41,6 +42,8 @@ public class PatientRegisterGUI extends Application
     public PatientRegisterGUI()
     {
         this.controller = new Controller();
+
+        this.statusLabel = new Label();
     }
 
     public static void main(String[] args)
@@ -54,6 +57,7 @@ public class PatientRegisterGUI extends Application
         BorderPane root = new BorderPane();
         root.setTop(this.setupTopMenu());
         root.setCenter(this.setupCenter());
+        root.setBottom(this.setupBottomLabel());
 
         primaryStage.setTitle("Patient Register");
         primaryStage.setMinWidth(300);
@@ -65,6 +69,7 @@ public class PatientRegisterGUI extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        this.setStatusMessage("OK");
         root.requestFocus();
     }
 
@@ -169,6 +174,29 @@ public class PatientRegisterGUI extends Application
 
         toolBox.getChildren().addAll(addPatientButton, editPatientButton, deletePatientButton);
         return toolBox;
+    }
+
+    /**
+     * Sets up the HBox that contains the bottom status Label
+     * @return An already set-up HBox that contains the bottom status Label
+     */
+    private HBox setupBottomLabel()
+    {
+        HBox statusBox = new HBox();
+        statusBox.setStyle("-fx-background-color: #b6b6b6");
+        statusBox.getChildren().add(this.statusLabel);
+        return statusBox;
+    }
+
+    /**
+     * Sets the given status message to the bottom status label
+     * @param message The message to set, can not be null
+     */
+    private void setStatusMessage(String message)
+    {
+        if (message != null) {
+            this.statusLabel.setText("Status: " + message);
+        }
     }
 
     /**
