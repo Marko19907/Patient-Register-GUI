@@ -1,7 +1,9 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -9,12 +11,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -24,7 +29,7 @@ import java.util.Arrays;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 17-04-2021
+ * @version 19-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
@@ -48,7 +53,7 @@ public class PatientRegisterGUI extends Application
     {
         BorderPane root = new BorderPane();
         root.setTop(this.setupTopMenu());
-        root.setCenter(this.setupCenterTable());
+        root.setCenter(this.setupCenter());
 
         primaryStage.setTitle("Patient Register");
         primaryStage.setMinWidth(300);
@@ -119,6 +124,51 @@ public class PatientRegisterGUI extends Application
         menuBar.getMenus().addAll(this.setupFileMenu(), this.setupEditMenu(), this.setupHelpMenu());
 
         return menuBar;
+    }
+
+    /**
+     * Sets up the VBox that contains the center tool box and the table
+     * @return An already set-up VBox that contains the center tool box and the table
+     */
+    private VBox setupCenter()
+    {
+        VBox centerVBox = new VBox();
+        centerVBox.getChildren().addAll(this.setupTopToolBox(), this.setupCenterTable());
+        return centerVBox;
+    }
+
+    /**
+     * Sets up the HBox that contains the top tool box
+     * @return An already set-up HBox that contains the top tool box
+     */
+    private HBox setupTopToolBox()
+    {
+        HBox toolBox = new HBox();
+        toolBox.setPadding(new Insets(5, 5, 5, 5));
+        toolBox.setSpacing(5);
+        int height = 35;
+        int width = 35;
+
+        Button addPatientButton = new Button();
+        addPatientButton.setMinHeight(height);
+        addPatientButton.setMinWidth(width);
+        addPatientButton.setTooltip(new Tooltip("Add Patient"));
+        addPatientButton.setOnAction(event -> this.controller.doAddNewPatientDialog());
+
+        Button editPatientButton = new Button();
+        editPatientButton.setMinHeight(height);
+        editPatientButton.setMinWidth(width);
+        editPatientButton.setTooltip(new Tooltip("Edit Patient"));
+        editPatientButton.setOnAction(event -> this.controller.doEditPatientDialog());
+
+        Button deletePatientButton = new Button();
+        deletePatientButton.setMinHeight(height);
+        deletePatientButton.setMinWidth(width);
+        deletePatientButton.setTooltip(new Tooltip("Delete Selected Patient"));
+        deletePatientButton.setOnAction(event -> this.controller.doDeletePatient());
+
+        toolBox.getChildren().addAll(addPatientButton, editPatientButton, deletePatientButton);
+        return toolBox;
     }
 
     /**
