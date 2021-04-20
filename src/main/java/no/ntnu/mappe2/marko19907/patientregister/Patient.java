@@ -6,7 +6,7 @@ package no.ntnu.mappe2.marko19907.patientregister;
  * the social security number and the name of the patient's general practitioner.
  *
  * @author Marko
- * @version 15-04-2021
+ * @version 20-04-2021
  */
 public class Patient
 {
@@ -158,5 +158,69 @@ public class Patient
     {
         return this.getFullName() + ", with ID: " + this.getSocialSecurityNumber()
                 + " is a patient of " + this.getGeneralPractitioner();
+    }
+
+    /**
+     * The PatientBuilder class is responsible for building an instance
+     * of a Patient class according to the Builder design pattern.
+     */
+    public static final class PatientBuilder
+    {
+        private final String firstName;
+        private final String lastName;
+        private final String socialSecurityNumber;
+        private String generalPractitioner;
+        private String diagnosis;
+
+        /**
+         * Instantiates the PatientBuilder with the required arguments.
+         */
+        public PatientBuilder(String firstName, String lastName, String socialSecurityNumber)
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.socialSecurityNumber = socialSecurityNumber;
+
+            this.generalPractitioner = "";
+            this.diagnosis = "";
+        }
+
+        /**
+         * Sets the patient's general practitioner and returns the PatientBuilder, intermediate operation
+         * @param generalPractitioner The patient's general practitioner name to set
+         * @return The PatientBuilder with the given general practitioner
+         */
+        public PatientBuilder withGeneralPractitioner(String generalPractitioner)
+        {
+            if (generalPractitioner != null) {
+                this.generalPractitioner = generalPractitioner;
+            }
+            return this;
+        }
+
+        /**
+         * Sets the patient's diagnosis and returns the PatientBuilder, intermediate operation
+         * @param diagnosis The patient's diagnosis to set
+         * @return The PatientBuilder with the given diagnosis
+         */
+        public PatientBuilder withDiagnosis(String diagnosis)
+        {
+            if (diagnosis != null) {
+                this.diagnosis = diagnosis;
+            }
+            return this;
+        }
+
+        /**
+         * Returns an instance of a Patient according to the provided arguments, terminal operation
+         * @return An instance of a Patient with the provided arguments
+         */
+        public Patient build()
+        {
+            Patient patient = new Patient(this.firstName, this.lastName, this.socialSecurityNumber);
+            patient.generalPractitioner = this.generalPractitioner;
+            patient.diagnosis = this.diagnosis;
+            return patient;
+        }
     }
 }

@@ -20,7 +20,7 @@ import java.util.Optional;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 18-04-2021
+ * @version 20-04-2021
  */
 public class Controller
 {
@@ -46,9 +46,17 @@ public class Controller
     private void fillWithDemoPatients()
     {
         this.patientRegister.addPatient(new Patient("Name1", "LastName1", "123"));
-        Patient patient2 = new Patient("Name2", "LastName2", "321");
-        patient2.setGeneralPractitioner("SpongeBob");
-        this.patientRegister.addPatient(patient2);
+
+        this.patientRegister.addPatient(new Patient
+                .PatientBuilder("Name2", "LastName2", "321")
+                .withGeneralPractitioner("SpongeBob")
+                .build());
+
+        this.patientRegister.addPatient(new Patient
+                .PatientBuilder("Name3", "LastName3", "987")
+                .withGeneralPractitioner("Doc3")
+                .withDiagnosis("Diag3")
+                .build());
 
         this.updateObservableList();
     }
@@ -229,7 +237,6 @@ public class Controller
                 patientDialog.setTitle("Add Patient");
                 break;
             case 2:
-
                 if (this.currentlySelectedPatient != null) {
                     patientDialog.setTitle("Edit Patient");
 
@@ -261,8 +268,9 @@ public class Controller
         patientDialog.setResultConverter(button -> {
             Patient result = null;
             if (button == ButtonType.OK) {
-                result = new Patient(patientName.getText(), patientLastName.getText(),
-                        socialSecurityNumber.getText());
+                result = new Patient.PatientBuilder(
+                        patientName.getText(), patientLastName.getText(), socialSecurityNumber.getText())
+                        .build();
             }
             return result;
         });
