@@ -19,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -141,6 +142,7 @@ public class PatientRegisterGUI extends Application
     {
         VBox centerVBox = new VBox();
         centerVBox.getChildren().addAll(this.setupTopToolBox(), this.setupCenterTable());
+        VBox.setVgrow(centerVBox.getChildren().get(1), Priority.ALWAYS);
         return centerVBox;
     }
 
