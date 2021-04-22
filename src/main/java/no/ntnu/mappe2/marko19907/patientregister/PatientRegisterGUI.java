@@ -222,6 +222,9 @@ public class PatientRegisterGUI extends Application
             catch (CancellationException e) {
                 this.setStatusMessage("Import cancelled");
             }
+            catch (IllegalArgumentException e) {
+                this.setStatusMessage("The CSV file header is invalid, import failed . . .");
+            }
             catch (IOException e) {
                 this.setStatusMessage("Import failed");
             }

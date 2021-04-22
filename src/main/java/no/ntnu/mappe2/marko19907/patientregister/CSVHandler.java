@@ -39,25 +39,32 @@ public class CSVHandler
     /**
      * Returns the patient List from a given CSV file
      * @param fileToRead The file to read from, not null
+     * @throws IllegalArgumentException If the CSV header of the given file is invalid
      * @throws IOException If an IO error is encountered
      */
-    public List<Patient> readPatientList(File fileToRead) throws IOException
+    public List<Patient> readPatientList(File fileToRead) throws IOException, IllegalArgumentException
     {
         List<Patient> patientList = new ArrayList<>();
 
         if (fileToRead != null) {
-            Reader reader = Files.newBufferedReader(Paths.get(fileToRead.getAbsolutePath()));
-            Iterable<CSVRecord> records = this.getCSVFormat().withFirstRecordAsHeader().parse(reader);
+            try {
+                Reader reader = Files.newBufferedReader(Paths.get(fileToRead.getAbsolutePath()));
+                Iterable<CSVRecord> records = this.getCSVFormat().withFirstRecordAsHeader().parse(reader);
 
-            for (CSVRecord record : records) {
-                String firstName = record.get(HEADERS[0]);
-                String lastName = record.get(HEADERS[1]);
-                String generalPractitioner = record.get(HEADERS[2]);
-                String socialSecurityNumber = record.get(HEADERS[3]);
+                for (CSVRecord record : records) {
+                    String firstName = record.get(HEADERS[0]);
+                    String lastName = record.get(HEADERS[1]);
+                    String generalPractitioner = record.get(HEADERS[2]);
+                    String socialSecurityNumber = record.get(HEADERS[3]);
 
-                patientList.add(new Patient.PatientBuilder(firstName, lastName, socialSecurityNumber)
-                        .withGeneralPractitioner(generalPractitioner)
-                        .build());
+                    patientList.add(new Patient.PatientBuilder(firstName, lastName, socialSecurityNumber)
+                            .withGeneralPractitioner(generalPractitioner)
+                            .build());
+                }
+            }
+            catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("The CSV header is in an unknown format, " +
+                        "expected [" + HEADERS[0] + "; " + HEADERS[1] + "; " + HEADERS[2] + "; " + HEADERS[3] + "]");
             }
         }
 

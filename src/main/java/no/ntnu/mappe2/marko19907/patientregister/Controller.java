@@ -142,8 +142,9 @@ public class Controller
      * @return True if the import was successful, false otherwise
      * @throws IOException If an IO error is encountered
      * @throws CancellationException If the user cancels the open action
+     * @throws IllegalArgumentException If the CSV header of the chosen file is invalid
      */
-    public boolean doImportCSVFile() throws IOException, CancellationException
+    public boolean doImportCSVFile() throws IOException, CancellationException, IllegalArgumentException
     {
         boolean success = false;
         FileChooser fileChooser = new FileChooser();
