@@ -23,13 +23,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.CancellationException;
 
 /**
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 19-04-2021
+ * @version 22-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
@@ -208,10 +210,34 @@ public class PatientRegisterGUI extends Application
         Menu fileMenu = new Menu("File");
 
         MenuItem importFromCVS = new MenuItem("Import from .CVS");
-        importFromCVS.setOnAction(event -> System.out.println("Import from .CVS menu item clicked!"));
+        importFromCVS.setOnAction(event -> {
+            try {
+                boolean success = this.controller.doImportCSVFile();
+                if (success) {
+                    this.setStatusMessage("Import successful");
+                }
+            }
+            catch (CancellationException e) {
+                this.setStatusMessage("Import cancelled");
+            }
+            catch (IOException e) {
+                this.setStatusMessage("Import failed");
+            }
+        });
 
         MenuItem exportToCVS = new MenuItem("Export to .CVS");
-        exportToCVS.setOnAction(event -> System.out.println("Export to .CVS menu item clicked!"));
+        exportToCVS.setOnAction(event -> {
+            try {
+                this.controller.doExportToCSV();
+                this.setStatusMessage("Export successful");
+            }
+            catch (CancellationException e) {
+                this.setStatusMessage("Export cancelled");
+            }
+            catch (IOException e) {
+                this.setStatusMessage("Export failed");
+            }
+        });
 
         SeparatorMenuItem separator = new SeparatorMenuItem();
 

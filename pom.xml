@@ -52,6 +52,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Apache Commons CSV, a library that reads and writes files in the Comma Separated Value (CSV) format -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.8</version>
+        </dependency>
+
         <!-- javafx -->
         <dependency>
             <groupId>org.openjfx</groupId>

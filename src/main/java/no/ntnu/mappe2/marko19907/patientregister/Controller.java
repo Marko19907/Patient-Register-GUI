@@ -12,19 +12,25 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CancellationException;
 
 /**
  * Class Controller represents the main controller for the application.
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 20-04-2021
+ * @version 22-04-2021
  */
 public class Controller
 {
     private final PatientRegister patientRegister;
+    private final CSVHandler csvHandler;
     private final ObservableList<Patient> patientObservableList;
     private Patient currentlySelectedPatient;
 
@@ -34,6 +40,7 @@ public class Controller
     public Controller()
     {
         this.patientRegister = new PatientRegister();
+        this.csvHandler = new CSVHandler();
         this.patientObservableList = FXCollections.observableArrayList(this.patientRegister.getPatientList());
         this.currentlySelectedPatient = null;
 
@@ -128,6 +135,54 @@ public class Controller
         else {
             this.doShowPatientDetailsDialog(2);
         }
+    }
+
+    /**
+     * Adds the contents of the selected CSV file to the register
+     * @return True if the import was successful, false otherwise
+     * @throws IOException If an IO error is encountered
+     * @throws CancellationException If the user cancels the open action
+     */
+    public boolean doImportCSVFile() throws IOException, CancellationException
+    {
+        boolean success = false;
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile == null) {
+            throw new CancellationException("The file chooser was dismissed");
+        }
+
+        List<Patient> importedPatients = this.csvHandler.readPatientList(selectedFile);
+        if (importedPatients != null) {
+            if (!importedPatients.isEmpty()) {
+                this.patientRegister.addPatients(importedPatients);
+                this.updateObservableList();
+            }
+            success = true;
+        }
+        return success;
+    }
+
+    /**
+     * Writes the contents of the patient register to a CSV file
+     * @throws IOException If an IO error is encountered
+     * @throws CancellationException If the user cancels the export action
+     */
+    public void doExportToCSV() throws IOException, CancellationException
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save to CSV");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile == null) {
+            throw new CancellationException("The file chooser was dismissed");
+        }
+
+        this.csvHandler.writePatientList(selectedFile, this.patientRegister.getPatientList());
     }
 
     // -----------------------------------------------------------

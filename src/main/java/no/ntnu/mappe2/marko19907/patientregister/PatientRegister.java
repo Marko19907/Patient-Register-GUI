@@ -8,7 +8,7 @@ import java.util.List;
  * It is responsible for adding, removing and returning a list of the Patients
  *
  * @author Marko
- * @version 14-04-2021
+ * @version 22-04-2021
  */
 public class PatientRegister
 {
@@ -30,6 +30,17 @@ public class PatientRegister
     {
         if (patient != null) {
             this.patients.add(patient);
+        }
+    }
+
+    /**
+     * Adds a given List of patients to the register
+     * @param patients The patient List to add, can not be null or empty
+     */
+    public void addPatients(List<Patient> patients)
+    {
+        if (patients != null) {
+            patients.forEach(this::addPatient);
         }
     }
 
