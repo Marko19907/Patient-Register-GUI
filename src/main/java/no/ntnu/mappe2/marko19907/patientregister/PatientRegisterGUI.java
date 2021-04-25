@@ -2,6 +2,7 @@ package no.ntnu.mappe2.marko19907.patientregister;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
@@ -32,7 +34,7 @@ import java.util.concurrent.CancellationException;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 22-04-2021
+ * @version 25-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
@@ -155,29 +157,60 @@ public class PatientRegisterGUI extends Application
         HBox toolBox = new HBox();
         toolBox.setPadding(new Insets(5, 5, 5, 5));
         toolBox.setSpacing(5);
-        int height = 35;
-        int width = 35;
+        toolBox.setStyle("-fx-background-color: #e7e7e7");
 
         Button addPatientButton = new Button();
-        addPatientButton.setMinHeight(height);
-        addPatientButton.setMinWidth(width);
+        this.setupTopToolBoxButton(addPatientButton);
         addPatientButton.setTooltip(new Tooltip("Add Patient"));
         addPatientButton.setOnAction(event -> this.controller.doAddNewPatientDialog());
+        ImageView addPersonIcon = ImageLoader.getInstance().getImage("add-person");
+        if (addPersonIcon != null) {
+            addPersonIcon.setFitHeight(33.5);
+            addPatientButton.setGraphic(addPersonIcon);
+        }
 
         Button editPatientButton = new Button();
-        editPatientButton.setMinHeight(height);
-        editPatientButton.setMinWidth(width);
+        this.setupTopToolBoxButton(editPatientButton);
         editPatientButton.setTooltip(new Tooltip("Edit Patient"));
         editPatientButton.setOnAction(event -> this.controller.doEditPatientDialog());
+        ImageView editPersonIcon = ImageLoader.getInstance().getImage("edit-person");
+        if (editPersonIcon != null) {
+            editPersonIcon.setFitHeight(34.95);
+            editPatientButton.setGraphic(editPersonIcon);
+        }
 
         Button deletePatientButton = new Button();
-        deletePatientButton.setMinHeight(height);
-        deletePatientButton.setMinWidth(width);
+        this.setupTopToolBoxButton(deletePatientButton);
         deletePatientButton.setTooltip(new Tooltip("Delete Selected Patient"));
         deletePatientButton.setOnAction(event -> this.controller.doDeletePatient());
+        ImageView deletePersonIcon = ImageLoader.getInstance().getImage("delete-person");
+        if (deletePersonIcon != null) {
+            deletePersonIcon.setFitWidth(31.15);
+            deletePatientButton.setGraphic(deletePersonIcon);
+        }
 
-        toolBox.getChildren().addAll(addPatientButton, editPatientButton, deletePatientButton);
+        toolBox.getChildren().addAll(addPatientButton, deletePatientButton, editPatientButton);
         return toolBox;
+    }
+
+    /**
+     * Sets up the height, width and the alignment of a given button
+     * @param button The button to set up the size and the alignment of, not null
+     */
+    private void setupTopToolBoxButton(Button button)
+    {
+        if (button != null) {
+            int height = 40;
+            int width = 40;
+
+            button.setMinHeight(height);
+            button.setMinWidth(width);
+            button.setMaxHeight(height);
+            button.setMaxWidth(width);
+            button.setPrefHeight(height);
+            button.setPrefWidth(width);
+            button.setAlignment(Pos.CENTER);
+        }
     }
 
     /**
