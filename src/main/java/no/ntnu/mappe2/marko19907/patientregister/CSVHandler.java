@@ -17,7 +17,7 @@ import java.util.List;
  * Class CSVHandler is responsible for reading and writing, to and from CSV files
  *
  * @author Marko
- * @version 22-04-2021
+ * @version 26-04-2021
  */
 public class CSVHandler
 {
@@ -26,7 +26,8 @@ public class CSVHandler
             "firstName",
             "lastName",
             "generalPractitioner",
-            "socialSecurityNumber"
+            "socialSecurityNumber",
+            "diagnosis"
     };
 
     /**
@@ -51,20 +52,26 @@ public class CSVHandler
                 Reader reader = Files.newBufferedReader(Paths.get(fileToRead.getAbsolutePath()));
                 Iterable<CSVRecord> records = this.getCSVFormat().withFirstRecordAsHeader().parse(reader);
 
-                for (CSVRecord record : records) {
-                    String firstName = record.get(HEADERS[0]);
-                    String lastName = record.get(HEADERS[1]);
-                    String generalPractitioner = record.get(HEADERS[2]);
-                    String socialSecurityNumber = record.get(HEADERS[3]);
+                for (CSVRecord csvRecord : records) {
+                    String firstName = csvRecord.get(HEADERS[0]);
+                    String lastName = csvRecord.get(HEADERS[1]);
+                    String generalPractitioner = csvRecord.get(HEADERS[2]);
+                    String socialSecurityNumber = csvRecord.get(HEADERS[3]);
+                    String diagnosis = "";
+                    if (csvRecord.isMapped(HEADERS[4])) {
+                        diagnosis = csvRecord.get(HEADERS[4]);
+                    }
 
                     patientList.add(new Patient.PatientBuilder(firstName, lastName, socialSecurityNumber)
                             .withGeneralPractitioner(generalPractitioner)
+                            .withDiagnosis(diagnosis)
                             .build());
                 }
             }
             catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("The CSV header is in an unknown format, " +
-                        "expected [" + HEADERS[0] + "; " + HEADERS[1] + "; " + HEADERS[2] + "; " + HEADERS[3] + "]");
+                throw new IllegalArgumentException("The CSV header is in an unknown format, "
+                        + "expected [" + HEADERS[0] + "; " + HEADERS[1] + "; "
+                        + HEADERS[2] + "; " + HEADERS[3] + "; " + HEADERS[4]+ "]");
             }
         }
 
@@ -88,7 +95,8 @@ public class CSVHandler
                             patient.getFirstName(),
                             patient.getLastName(),
                             patient.getGeneralPractitioner(),
-                            patient.getSocialSecurityNumber()
+                            patient.getSocialSecurityNumber(),
+                            patient.getDiagnosis()
                     );
                 }
 
@@ -105,12 +113,13 @@ public class CSVHandler
     private CSVFormat getCSVFormat()
     {
         return CSVFormat
-                .RFC4180
+                .DEFAULT
                 .withHeader(
                         HEADERS[0],
                         HEADERS[1],
                         HEADERS[2],
-                        HEADERS[3]
+                        HEADERS[3],
+                        HEADERS[4]
                 )
                 .withIgnoreHeaderCase()
                 .withDelimiter(DELIMITER);
