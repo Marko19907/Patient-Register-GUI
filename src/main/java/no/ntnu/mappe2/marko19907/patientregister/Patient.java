@@ -1,12 +1,14 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
+import java.util.Objects;
+
 /**
  * Class Patient represents a single patient in the hospital.
  * It is responsible for storing the details of a single patient, their name, last name,
  * the social security number and the name of the patient's general practitioner.
  *
  * @author Marko
- * @version 20-04-2021
+ * @version 27-04-2021
  */
 public class Patient
 {
@@ -158,6 +160,28 @@ public class Patient
     {
         return this.getFullName() + ", with ID: " + this.getSocialSecurityNumber()
                 + " is a patient of " + this.getGeneralPractitioner();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || this.getClass() != o.getClass())
+            return false;
+        final Patient patient = (Patient) o;
+        return this.getFirstName().equals(patient.getFirstName())
+                && this.getLastName().equals(patient.getLastName())
+                && this.getSocialSecurityNumber().equals(patient.getSocialSecurityNumber())
+                && Objects.equals(this.getGeneralPractitioner(), patient.getGeneralPractitioner())
+                && Objects.equals(this.getDiagnosis(), patient.getDiagnosis());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.getFirstName(), this.getLastName(),
+                this.getSocialSecurityNumber(), this.getGeneralPractitioner(), this.getDiagnosis());
     }
 
     /**
