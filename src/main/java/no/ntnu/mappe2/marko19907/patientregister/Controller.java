@@ -25,12 +25,13 @@ import java.util.concurrent.CancellationException;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 22-04-2021
+ * @version 29-04-2021
  */
 public class Controller
 {
     private final PatientRegister patientRegister;
     private final CSVHandler csvHandler;
+    private final NodeFactory nodeFactory;
     private final ObservableList<Patient> patientObservableList;
     private Patient currentlySelectedPatient;
 
@@ -41,6 +42,8 @@ public class Controller
     {
         this.patientRegister = new PatientRegister();
         this.csvHandler = new CSVHandler();
+        this.nodeFactory = new NodeFactory();
+
         this.patientObservableList = FXCollections.observableArrayList(this.patientRegister.getPatientList());
         this.currentlySelectedPatient = null;
 
@@ -274,18 +277,18 @@ public class Controller
         Dialog<Patient> patientDialog = new Dialog<>();
         patientDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        GridPane grid = new GridPane();
+        GridPane grid = (GridPane) this.nodeFactory.createGridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 120, 10, 10));
 
-        TextField patientName = new TextField();
+        TextField patientName = (TextField) this.nodeFactory.createTextField();
         patientName.setPromptText("First name");
 
-        TextField patientLastName = new TextField();
+        TextField patientLastName = (TextField) this.nodeFactory.createTextField();
         patientLastName.setPromptText("Last name");
 
-        TextField socialSecurityNumber = new TextField();
+        TextField socialSecurityNumber = (TextField) this.nodeFactory.createTextField();
         socialSecurityNumber.setPromptText("Social security number");
 
         switch (mode) {

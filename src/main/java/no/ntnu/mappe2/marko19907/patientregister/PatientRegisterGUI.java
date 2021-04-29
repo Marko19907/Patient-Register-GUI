@@ -12,6 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -34,11 +35,12 @@ import java.util.concurrent.CancellationException;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 25-04-2021
+ * @version 29-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
     private final Controller controller;
+    private final NodeFactory nodeFactory;
     private final Label statusLabel;
 
     /**
@@ -47,8 +49,9 @@ public class PatientRegisterGUI extends Application
     public PatientRegisterGUI()
     {
         this.controller = new Controller();
+        this.nodeFactory = new NodeFactory();
 
-        this.statusLabel = new Label();
+        this.statusLabel = (Label) this.nodeFactory.createLabel();
     }
 
     public static void main(String[] args)
@@ -59,7 +62,7 @@ public class PatientRegisterGUI extends Application
     @Override
     public void start(Stage primaryStage)
     {
-        BorderPane root = new BorderPane();
+        BorderPane root = (BorderPane) this.nodeFactory.createBorderPane();
         root.setTop(this.setupTopMenu());
         root.setCenter(this.setupCenter());
         root.setBottom(this.setupBottomLabel());
@@ -84,7 +87,7 @@ public class PatientRegisterGUI extends Application
      */
     private TableView<Patient> setupCenterTable()
     {
-        TableView<Patient> patientTableView = new TableView<>();
+        TableView<Patient> patientTableView = (TableView<Patient>) this.nodeFactory.createTableView();
         patientTableView.setPlaceholder(new Label("No patients to display"));
         patientTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -129,7 +132,7 @@ public class PatientRegisterGUI extends Application
      */
     private MenuBar setupTopMenu()
     {
-        MenuBar menuBar = new MenuBar();
+        MenuBar menuBar = (MenuBar) this.nodeFactory.createMenuBar();
 
         menuBar.getMenus().addAll(this.setupFileMenu(), this.setupEditMenu(), this.setupHelpMenu());
 
@@ -142,25 +145,24 @@ public class PatientRegisterGUI extends Application
      */
     private VBox setupCenter()
     {
-        VBox centerVBox = new VBox();
+        VBox centerVBox = (VBox) this.nodeFactory.createVBox();
         centerVBox.getChildren().addAll(this.setupTopToolBox(), this.setupCenterTable());
         VBox.setVgrow(centerVBox.getChildren().get(1), Priority.ALWAYS);
         return centerVBox;
     }
 
     /**
-     * Sets up the HBox that contains the top tool box
-     * @return An already set-up HBox that contains the top tool box
+     * Sets up the top ToolBar
+     * @return An already set-up ToolBar
      */
-    private HBox setupTopToolBox()
+    private ToolBar setupTopToolBox()
     {
-        HBox toolBox = new HBox();
-        toolBox.setPadding(new Insets(5, 5, 5, 5));
-        toolBox.setSpacing(5);
-        toolBox.setStyle("-fx-background-color: #e7e7e7");
+        ToolBar toolBar = (ToolBar) this.nodeFactory.createToolBar();
+        toolBar.setPadding(new Insets(5, 5, 5, 5));
+        toolBar.setStyle("-fx-background-color: #e7e7e7");
 
-        Button addPatientButton = new Button();
-        this.setupTopToolBoxButton(addPatientButton);
+        Button addPatientButton = (Button) this.nodeFactory.createButton();
+        this.setupTopToolBarButton(addPatientButton);
         addPatientButton.setTooltip(new Tooltip("Add Patient"));
         addPatientButton.setOnAction(event -> this.controller.doAddNewPatientDialog());
         ImageView addPersonIcon = ImageLoader.getInstance().getImage("add-person");
@@ -169,8 +171,8 @@ public class PatientRegisterGUI extends Application
             addPatientButton.setGraphic(addPersonIcon);
         }
 
-        Button editPatientButton = new Button();
-        this.setupTopToolBoxButton(editPatientButton);
+        Button editPatientButton = (Button) this.nodeFactory.createButton();
+        this.setupTopToolBarButton(editPatientButton);
         editPatientButton.setTooltip(new Tooltip("Edit Patient"));
         editPatientButton.setOnAction(event -> this.controller.doEditPatientDialog());
         ImageView editPersonIcon = ImageLoader.getInstance().getImage("edit-person");
@@ -179,8 +181,8 @@ public class PatientRegisterGUI extends Application
             editPatientButton.setGraphic(editPersonIcon);
         }
 
-        Button deletePatientButton = new Button();
-        this.setupTopToolBoxButton(deletePatientButton);
+        Button deletePatientButton = (Button) this.nodeFactory.createButton();
+        this.setupTopToolBarButton(deletePatientButton);
         deletePatientButton.setTooltip(new Tooltip("Delete Selected Patient"));
         deletePatientButton.setOnAction(event -> this.controller.doDeletePatient());
         ImageView deletePersonIcon = ImageLoader.getInstance().getImage("delete-person");
@@ -189,15 +191,15 @@ public class PatientRegisterGUI extends Application
             deletePatientButton.setGraphic(deletePersonIcon);
         }
 
-        toolBox.getChildren().addAll(addPatientButton, deletePatientButton, editPatientButton);
-        return toolBox;
+        toolBar.getItems().addAll(addPatientButton, deletePatientButton, editPatientButton);
+        return toolBar;
     }
 
     /**
      * Sets up the height, width and the alignment of a given button
      * @param button The button to set up the size and the alignment of, not null
      */
-    private void setupTopToolBoxButton(Button button)
+    private void setupTopToolBarButton(Button button)
     {
         if (button != null) {
             int height = 40;
@@ -219,7 +221,7 @@ public class PatientRegisterGUI extends Application
      */
     private HBox setupBottomLabel()
     {
-        HBox statusBox = new HBox();
+        HBox statusBox = (HBox) this.nodeFactory.createHBox();
         statusBox.setStyle("-fx-background-color: #b6b6b6");
         statusBox.getChildren().add(this.statusLabel);
         return statusBox;
