@@ -35,7 +35,7 @@ import java.util.concurrent.CancellationException;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 29-04-2021
+ * @version 30-04-2021
  */
 public class PatientRegisterGUI extends Application
 {
@@ -248,6 +248,8 @@ public class PatientRegisterGUI extends Application
 
         MenuItem importFromCVS = new MenuItem("Import from .CVS");
         importFromCVS.setOnAction(event -> {
+            this.setStatusMessage("Import started");
+
             try {
                 boolean success = this.controller.doImportCSVFile();
                 if (success) {
@@ -267,6 +269,8 @@ public class PatientRegisterGUI extends Application
 
         MenuItem exportToCVS = new MenuItem("Export to .CVS");
         exportToCVS.setOnAction(event -> {
+            this.setStatusMessage("Export started");
+
             try {
                 this.controller.doExportToCSV();
                 this.setStatusMessage("Export successful");
