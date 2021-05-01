@@ -1,5 +1,8 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
 /**
@@ -8,13 +11,16 @@ import java.util.Objects;
  * the social security number and the name of the patient's general practitioner.
  *
  * @author Marko
- * @version 27-04-2021
+ * @version 01-05-2021
  */
+@Entity
 public class Patient
 {
+    @Id
+    private String socialSecurityNumber;
+
     private String firstName;
     private String lastName;
-    private String socialSecurityNumber;
     private String generalPractitioner;
     private String diagnosis;
 
@@ -35,6 +41,18 @@ public class Patient
         this.lastName = lastName;
         this.socialSecurityNumber = socialSecurityNumber;
 
+        this.generalPractitioner = "";
+        this.diagnosis = "";
+    }
+
+    /**
+     * Protected no-arg constructor.
+     */
+    protected Patient()
+    {
+        this.firstName = "";
+        this.lastName = "";
+        this.socialSecurityNumber = "";
         this.generalPractitioner = "";
         this.diagnosis = "";
     }

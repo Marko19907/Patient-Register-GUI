@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PatientRegisterTest
+public class PatientRegisterPlainTest
 {
     @Test
     @DisplayName("Test adding a patient to the register")
     public void testAddingPatient()
     {
-        PatientRegister register = new PatientRegister();
+        PatientRegisterPlain register = new PatientRegisterPlain();
         Patient patient = new Patient("Name1", "LastName1", "123");
 
         register.addPatient(patient);
@@ -29,7 +29,7 @@ public class PatientRegisterTest
     @DisplayName("Test adding null to the register")
     public void testAddingNullPatient()
     {
-        PatientRegister register = new PatientRegister();
+        PatientRegisterPlain register = new PatientRegisterPlain();
 
         register.addPatient(null);
 
@@ -41,7 +41,7 @@ public class PatientRegisterTest
     public void testAddingPatientList()
     {
         // Arrange
-        PatientRegister register = new PatientRegister();
+        PatientRegisterPlain register = new PatientRegisterPlain();
         Patient patient1 = new Patient("Name1", "LastName1", "123");
         Patient patient2 = new Patient("Name2", "LastName2", "321");
         List<Patient> patientList = new ArrayList<>();
@@ -61,7 +61,7 @@ public class PatientRegisterTest
     @DisplayName("Test adding a null List of patients to the register")
     public void testAddingNullPatientList()
     {
-        PatientRegister register = new PatientRegister();
+        PatientRegisterPlain register = new PatientRegisterPlain();
 
         register.addPatients(null);
 
@@ -72,7 +72,7 @@ public class PatientRegisterTest
     @DisplayName("Test removing a patient from the register")
     public void testRemovingPatient()
     {
-        PatientRegister register = new PatientRegister();
+        PatientRegisterPlain register = new PatientRegisterPlain();
         Patient patient = new Patient("Name1", "LastName1", "123");
         register.addPatient(patient);
 
@@ -86,7 +86,7 @@ public class PatientRegisterTest
     @DisplayName("Test removing null from the register")
     public void testRemovingNull()
     {
-        PatientRegister register = new PatientRegister();
+        PatientRegisterPlain register = new PatientRegisterPlain();
         Patient patient = new Patient("Name1", "LastName1", "123");
         register.addPatient(patient);
 

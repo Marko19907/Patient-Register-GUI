@@ -25,7 +25,7 @@ import java.util.concurrent.CancellationException;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 29-04-2021
+ * @version 01-05-2021
  */
 public class Controller
 {
@@ -40,7 +40,8 @@ public class Controller
      */
     public Controller()
     {
-        this.patientRegister = new PatientRegister();
+        //this.patientRegister = new PatientRegisterPlain();
+        this.patientRegister = new PatientRegisterDB();
         this.csvHandler = new CSVHandler();
         this.nodeFactory = new NodeFactory();
 
@@ -55,18 +56,22 @@ public class Controller
      */
     private void fillWithDemoPatients()
     {
-        this.patientRegister.addPatient(new Patient("Name1", "LastName1", "123"));
+        try {
+            this.patientRegister.addPatient(new Patient("Name1", "LastName1", "123"));
 
-        this.patientRegister.addPatient(new Patient
-                .PatientBuilder("Name2", "LastName2", "321")
-                .withGeneralPractitioner("SpongeBob")
-                .build());
+            this.patientRegister.addPatient(new Patient
+                    .PatientBuilder("Name2", "LastName2", "321")
+                    .withGeneralPractitioner("SpongeBob")
+                    .build());
 
-        this.patientRegister.addPatient(new Patient
-                .PatientBuilder("Name3", "LastName3", "987")
-                .withGeneralPractitioner("Doc3")
-                .withDiagnosis("Diag3")
-                .build());
+            this.patientRegister.addPatient(new Patient
+                    .PatientBuilder("Name3", "LastName3", "987")
+                    .withGeneralPractitioner("Doc3")
+                    .withDiagnosis("Diag3")
+                    .build());
+        }
+        catch (DuplicateKeyException ignored) {
+        }
 
         this.updateObservableList();
     }
@@ -146,8 +151,10 @@ public class Controller
      * @throws IOException If an IO error is encountered
      * @throws CancellationException If the user cancels the open action
      * @throws IllegalArgumentException If the CSV header of the chosen file is invalid
+     * @throws DuplicateKeyException If the CSV file contains a duplicate entry
      */
-    public boolean doImportCSVFile() throws IOException, CancellationException, IllegalArgumentException
+    public boolean doImportCSVFile() throws IOException, CancellationException,
+            IllegalArgumentException, DuplicateKeyException
     {
         boolean success = false;
         FileChooser fileChooser = new FileChooser();
@@ -162,7 +169,13 @@ public class Controller
         List<Patient> importedPatients = this.csvHandler.readPatientList(selectedFile);
         if (importedPatients != null) {
             if (!importedPatients.isEmpty()) {
-                this.patientRegister.addPatients(importedPatients);
+                try {
+                    this.patientRegister.addPatients(importedPatients);
+                }
+                catch (DuplicateKeyException e) {
+                    throw new DuplicateKeyException("A patient with that social security number already exists");
+                }
+
                 this.updateObservableList();
             }
             success = true;
@@ -187,6 +200,14 @@ public class Controller
         }
 
         this.csvHandler.writePatientList(selectedFile, this.patientRegister.getPatientList());
+    }
+
+    /**
+     * Removes the currently selected patient selection
+     */
+    private void clearSelection()
+    {
+        this.currentlySelectedPatient = null;
     }
 
     // -----------------------------------------------------------
@@ -258,6 +279,19 @@ public class Controller
         alert.setHeaderText("No items selected");
         alert.setContentText("No item is selected in the table. " + "\n"
                 + "Please select an item from the table first.");
+        alert.showAndWait();
+    }
+
+    /**
+     * Displays a warning dialog to warn the user that the entered social security number is a duplicate
+     */
+    private void showDuplicateSocialSecurityNumberDialog()
+    {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Information");
+        alert.setHeaderText("Duplicate Social Security Number");
+        alert.setContentText("The social security number entered is a duplicate" + "\n"
+                + "The patient was not added or modified . . .");
         alert.showAndWait();
     }
 
@@ -339,14 +373,28 @@ public class Controller
             switch (mode) {
                 case 1:
                     Patient newPatient = result.get();
-                    this.patientRegister.addPatient(newPatient);
+                    try {
+                        this.patientRegister.addPatient(newPatient);
+                    }
+                    catch (DuplicateKeyException e) {
+                        this.showDuplicateSocialSecurityNumberDialog();
+                    }
                     break;
-
                 case 2:
                     if (this.currentlySelectedPatient != null) {
-                        this.currentlySelectedPatient.setFirstName(patientName.getText());
-                        this.currentlySelectedPatient.setLastName(patientLastName.getText());
-                        this.currentlySelectedPatient.setSocialSecurityNumber(socialSecurityNumber.getText());
+                        Patient modifiedPatient = new Patient.PatientBuilder(
+                                patientName.getText(),
+                                patientLastName.getText(),
+                                socialSecurityNumber.getText())
+                                .build();
+                        try {
+                            this.patientRegister.updatePatient(modifiedPatient, this.currentlySelectedPatient);
+                        }
+                        catch (DuplicateKeyException e) {
+                            this.showDuplicateSocialSecurityNumberDialog();
+                        }
+
+                        this.clearSelection();
                     }
                     break;
                 default:

@@ -1,74 +1,59 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The class PatientRegister represents a register that can hold Patients
- * It is responsible for adding, removing and returning a list of the Patients
+ * PatientRegister represents a DAO interface for create, read, update,
+ * and delete (CRUD) operations of persistent storage
  *
  * @author Marko
- * @version 22-04-2021
+ * @version 01-05-2021
  */
-public class PatientRegister
+interface PatientRegister
 {
-    private final ArrayList<Patient> patients;
-
-    /**
-     * Constructor for PatientRegister objects
-     */
-    public PatientRegister()
-    {
-        this.patients = new ArrayList<>();
-    }
-
     /**
      * Adds a given patient to the register
      * @param patient The patient to add, can not be null
+     * @throws DuplicateKeyException If a patient with the same social security number exists
      */
-    public void addPatient(Patient patient)
-    {
-        if (patient != null) {
-            this.patients.add(patient);
-        }
-    }
+    void addPatient(Patient patient) throws DuplicateKeyException;
 
     /**
      * Adds a given List of patients to the register
      * @param patients The patient List to add, can not be null or empty
+     * @throws DuplicateKeyException If a patient with the same social security number exists
      */
-    public void addPatients(List<Patient> patients)
-    {
-        if (patients != null) {
-            patients.forEach(this::addPatient);
-        }
-    }
+    void addPatients(List<Patient> patients);
 
     /**
      * Returns a List of patients in the register
      * @return A List of patients in the register
      */
-    public List<Patient> getPatientList()
-    {
-        return this.patients;
-    }
+    List<Patient> getPatientList();
 
     /**
      * Removes a given patient from the register
      * @param patientToRemove The patient to remove, can not be null
      * @return True if the given patient was removed, false when given null and false otherwise
      */
-    public boolean removePatient(Patient patientToRemove)
-    {
-        return this.patients.removeIf(patient -> patient.equals(patientToRemove));
-    }
+    boolean removePatient(Patient patientToRemove);
+
+    /**
+     * Updates the given patient in the register
+     * @param newPatient The patient that replaces the oldPatient
+     * @param oldPatient The patient that is to be replaced with the newPatient
+     * @throws DuplicateKeyException If a patient with the same social security number exists
+     */
+    void updatePatient(Patient newPatient, Patient oldPatient) throws DuplicateKeyException;
 
     /**
      * Returns the number of patients in the register
      * @return The number of patients in the register as an int
      */
-    public int getNumberOfPatients()
-    {
-        return this.patients.size();
-    }
+    int getNumberOfPatients();
+
+    /**
+     * Closes the connection to the database
+     */
+    void close();
 }

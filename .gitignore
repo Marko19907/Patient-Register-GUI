@@ -46,4 +46,4 @@ hs_err_pid*
 
 # Project specific files
 *.csv
-persistence.xml
+STOlavsRegister/
