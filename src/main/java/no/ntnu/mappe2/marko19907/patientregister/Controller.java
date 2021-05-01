@@ -106,7 +106,7 @@ public class Controller
             boolean deleteConfirmed = this.showDeleteConfirmationDialog();
             if (deleteConfirmed) {
                 this.patientRegister.removePatient(this.currentlySelectedPatient);
-                this.currentlySelectedPatient = null;
+                this.clearSelection();
 
                 this.updateObservableList();
             }
@@ -122,6 +122,14 @@ public class Controller
         if (patient != null) {
             this.currentlySelectedPatient = patient;
         }
+    }
+
+    /**
+     * Removes the currently selected patient selection
+     */
+    private void clearSelection()
+    {
+        this.currentlySelectedPatient = null;
     }
 
     /**
@@ -200,14 +208,6 @@ public class Controller
         }
 
         this.csvHandler.writePatientList(selectedFile, this.patientRegister.getPatientList());
-    }
-
-    /**
-     * Removes the currently selected patient selection
-     */
-    private void clearSelection()
-    {
-        this.currentlySelectedPatient = null;
     }
 
     // -----------------------------------------------------------
