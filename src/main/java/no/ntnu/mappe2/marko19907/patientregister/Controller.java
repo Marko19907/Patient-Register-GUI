@@ -325,6 +325,12 @@ public class Controller
         TextField socialSecurityNumber = (TextField) this.nodeFactory.createTextField();
         socialSecurityNumber.setPromptText("Social security number");
 
+        TextField generalPractitioner = (TextField) this.nodeFactory.createTextField();
+        generalPractitioner.setPromptText("General Practitioner");
+
+        TextField diagnosis = (TextField) this.nodeFactory.createTextField();
+        diagnosis.setPromptText("Diagnosis");
+
         switch (mode) {
             case 1:
                 patientDialog.setTitle("Add Patient");
@@ -336,6 +342,9 @@ public class Controller
                     patientName.setText(this.currentlySelectedPatient.getFirstName());
                     patientLastName.setText(this.currentlySelectedPatient.getLastName());
                     socialSecurityNumber.setText(this.currentlySelectedPatient.getSocialSecurityNumber());
+
+                    generalPractitioner.setText(this.currentlySelectedPatient.getGeneralPractitioner());
+                    diagnosis.setText(this.currentlySelectedPatient.getDiagnosis());
                 }
                 break;
             default:
@@ -350,12 +359,16 @@ public class Controller
                 .or(socialSecurityNumber.textProperty().isEmpty());
         patientDialog.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(blankTextField);
 
-        grid.add(new Label("First name:"), 0, 0);
+        grid.add(new Label("First name*:"), 0, 0);
         grid.add(patientName, 1, 0);
-        grid.add(new Label("Last name:"), 0, 1);
+        grid.add(new Label("Last name*:"), 0, 1);
         grid.add(patientLastName, 1, 1);
-        grid.add(new Label("Social security number:"), 0, 2);
+        grid.add(new Label("Social security number*:"), 0, 2);
         grid.add(socialSecurityNumber, 1, 2);
+        grid.add(new Label("General Practitioner:"), 0, 3);
+        grid.add(generalPractitioner, 1, 3);
+        grid.add(new Label("Diagnosis:"), 0, 4);
+        grid.add(diagnosis, 1, 4);
 
         patientDialog.getDialogPane().setContent(grid);
         patientDialog.setResultConverter(button -> {
@@ -363,6 +376,8 @@ public class Controller
             if (button == ButtonType.OK) {
                 result = new Patient.PatientBuilder(
                         patientName.getText(), patientLastName.getText(), socialSecurityNumber.getText())
+                        .withGeneralPractitioner(generalPractitioner.getText())
+                        .withDiagnosis(diagnosis.getText())
                         .build();
             }
             return result;
@@ -386,6 +401,8 @@ public class Controller
                                 patientName.getText(),
                                 patientLastName.getText(),
                                 socialSecurityNumber.getText())
+                                .withGeneralPractitioner(generalPractitioner.getText())
+                                .withDiagnosis(diagnosis.getText())
                                 .build();
                         try {
                             this.patientRegister.updatePatient(modifiedPatient, this.currentlySelectedPatient);
