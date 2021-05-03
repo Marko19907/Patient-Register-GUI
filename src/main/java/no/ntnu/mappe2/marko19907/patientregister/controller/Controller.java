@@ -31,7 +31,7 @@ import java.util.concurrent.CancellationException;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 01-05-2021
+ * @version 03-05-2021
  */
 public class Controller
 {
@@ -232,7 +232,6 @@ public class Controller
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
             if (result.get() == ButtonType.OK) {
-                //TODO: Save the app's state to disk before exiting?
                 Platform.exit();
             }
             else {
