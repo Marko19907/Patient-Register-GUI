@@ -40,14 +40,13 @@ import java.util.concurrent.CancellationException;
  * Class PatientRegisterGUI represents the main window in the application.
  *
  * @author Marko
- * @version 01-05-2021
+ * @version 03-05-2021
  */
 public class PatientRegisterGUI extends Application
 {
     private final Controller controller;
     private final NodeFactory nodeFactory;
 
-    private final TableView<Patient> patientTableView;
     private final Label statusLabel;
 
     /**
@@ -59,7 +58,6 @@ public class PatientRegisterGUI extends Application
         this.nodeFactory = new NodeFactory();
 
         this.statusLabel = (Label) this.nodeFactory.createLabel();
-        this.patientTableView = (TableView<Patient>) this.nodeFactory.createTableView();
     }
 
     public static void main(String[] args)
@@ -95,8 +93,9 @@ public class PatientRegisterGUI extends Application
      */
     private TableView<Patient> setupCenterTable()
     {
-        this.patientTableView.setPlaceholder(new Label("No patients to display"));
-        this.patientTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        TableView<Patient> patientTableView = (TableView<Patient>) this.nodeFactory.createTableView();
+        patientTableView.setPlaceholder(new Label("No patients to display"));
+        patientTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 
         // Create the columns
@@ -117,20 +116,20 @@ public class PatientRegisterGUI extends Application
 
 
         // set on left click action
-        this.patientTableView.setOnMouseClicked((MouseEvent event) -> {
+        patientTableView.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 this.controller.setCurrentlySelectedPatient(
-                        this.patientTableView.getSelectionModel().getSelectedItem());
+                        patientTableView.getSelectionModel().getSelectedItem());
             }
         });
 
-        this.patientTableView.getColumns().addAll(Arrays.asList(nameColumn, lastNameColumn, socialSecurityNumberColumn,
+        patientTableView.getColumns().addAll(Arrays.asList(nameColumn, lastNameColumn, socialSecurityNumberColumn,
                 generalPractitionerColumn, diagnosisColumn));
-        this.patientTableView.setItems(this.controller.getPatientObservableList());
+        patientTableView.setItems(this.controller.getPatientObservableList());
         //Set a default sort column
-        this.patientTableView.getSortOrder().add(nameColumn);
+        patientTableView.getSortOrder().add(nameColumn);
 
-        return this.patientTableView;
+        return patientTableView;
     }
 
     /**
@@ -181,10 +180,7 @@ public class PatientRegisterGUI extends Application
         Button editPatientButton = (Button) this.nodeFactory.createButton();
         this.setupTopToolBarButton(editPatientButton);
         editPatientButton.setTooltip(new Tooltip("Edit Patient"));
-        editPatientButton.setOnAction(event -> {
-            this.controller.doEditPatientDialog();
-            this.patientTableView.getSelectionModel().clearSelection();
-        });
+        editPatientButton.setOnAction(event -> this.controller.doEditPatientDialog());
         ImageView editPersonIcon = ImageLoader.getInstance().getImage("edit-person");
         if (editPersonIcon != null) {
             editPersonIcon.setFitHeight(34.95);
