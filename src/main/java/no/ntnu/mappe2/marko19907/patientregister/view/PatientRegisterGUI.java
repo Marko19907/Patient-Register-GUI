@@ -1,4 +1,4 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.view;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -26,6 +26,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import no.ntnu.mappe2.marko19907.patientregister.controller.Controller;
+import no.ntnu.mappe2.marko19907.patientregister.exception.DuplicateKeyException;
+import no.ntnu.mappe2.marko19907.patientregister.model.Patient;
+import no.ntnu.mappe2.marko19907.patientregister.utility.ImageLoader;
+import no.ntnu.mappe2.marko19907.patientregister.utility.NodeFactory;
 
 import java.io.IOException;
 import java.util.Arrays;

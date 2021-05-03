@@ -1,4 +1,4 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.controller;
 
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
@@ -13,6 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import no.ntnu.mappe2.marko19907.patientregister.utility.CSVHandler;
+import no.ntnu.mappe2.marko19907.patientregister.exception.DuplicateKeyException;
+import no.ntnu.mappe2.marko19907.patientregister.utility.NodeFactory;
+import no.ntnu.mappe2.marko19907.patientregister.model.Patient;
+import no.ntnu.mappe2.marko19907.patientregister.model.PatientRegister;
+import no.ntnu.mappe2.marko19907.patientregister.model.PatientRegisterDB;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +54,7 @@ public class Controller
         this.patientObservableList = FXCollections.observableArrayList(this.patientRegister.getPatientList());
         this.currentlySelectedPatient = null;
 
-        this.fillWithDemoPatients();
+        //this.fillWithDemoPatients();
     }
 
     /**

@@ -1,5 +1,6 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.utility;
 
+import no.ntnu.mappe2.marko19907.patientregister.model.Patient;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;

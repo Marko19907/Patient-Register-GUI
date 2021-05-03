@@ -1,4 +1,6 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.model;
+
+import no.ntnu.mappe2.marko19907.patientregister.exception.DuplicateKeyException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,9 +68,7 @@ public class PatientRegisterPlain implements PatientRegister
         if (newPatient != null && oldPatient != null) {
             if (this.patients.containsKey(oldPatient.getSocialSecurityNumber())) {
                 Patient foundPatient = this.patients.get(newPatient.getSocialSecurityNumber());
-                if (foundPatient != null
-                        && !foundPatient.equals(oldPatient)
-                        && foundPatient.getSocialSecurityNumber().equals(newPatient.getSocialSecurityNumber())) {
+                if (foundPatient != null && !foundPatient.equals(oldPatient)) {
                     throw new DuplicateKeyException("A patient with that social security number already exists");
                 }
 

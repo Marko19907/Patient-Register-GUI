@@ -1,4 +1,6 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.model;
+
+import no.ntnu.mappe2.marko19907.patientregister.exception.DuplicateKeyException;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  * @author Marko
  * @version 01-05-2021
  */
-interface PatientRegister
+public interface PatientRegister
 {
     /**
      * Adds a given patient to the register

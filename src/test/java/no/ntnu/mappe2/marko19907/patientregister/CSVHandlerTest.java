@@ -1,6 +1,8 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
 
+import no.ntnu.mappe2.marko19907.patientregister.model.Patient;
+import no.ntnu.mappe2.marko19907.patientregister.utility.CSVHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

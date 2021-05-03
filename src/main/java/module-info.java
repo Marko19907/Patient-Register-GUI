@@ -5,7 +5,7 @@ module no.ntnu.mappe2.marko19907.patientregister {
     requires jakarta.persistence;
 
     // Open the package to "anyone" to enable access by reflection for the Jupiter test engine
-    opens no.ntnu.mappe2.marko19907.patientregister;
+    opens no.ntnu.mappe2.marko19907.patientregister.model;
 
-    exports no.ntnu.mappe2.marko19907.patientregister;
+    exports no.ntnu.mappe2.marko19907.patientregister.view;
 }

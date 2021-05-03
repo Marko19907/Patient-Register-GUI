@@ -1,4 +1,4 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.utility;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

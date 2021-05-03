@@ -1,5 +1,6 @@
 package no.ntnu.mappe2.marko19907.patientregister;
 
+import no.ntnu.mappe2.marko19907.patientregister.model.Patient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,9 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.model;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import no.ntnu.mappe2.marko19907.patientregister.exception.DuplicateKeyException;
 
 import java.util.List;
 
@@ -77,9 +78,7 @@ public class PatientRegisterDB implements PatientRegister
         if (newPatient != null && oldPatient != null) {
             if (this.entityManager.contains(oldPatient)) {
                 Patient foundPatient = this.entityManager.find(Patient.class, newPatient.getSocialSecurityNumber());
-                if (foundPatient != null
-                        && !foundPatient.equals(oldPatient)
-                        && foundPatient.getSocialSecurityNumber().equals(newPatient.getSocialSecurityNumber())) {
+                if (foundPatient != null && !foundPatient.equals(oldPatient)) {
                     throw new DuplicateKeyException("A patient with that social security number already exists");
                 }
 

@@ -1,4 +1,4 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.exception;
 
 /**
  * Captures that a given object already exist in the register

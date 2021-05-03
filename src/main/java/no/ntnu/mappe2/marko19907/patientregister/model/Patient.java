@@ -1,4 +1,4 @@
-package no.ntnu.mappe2.marko19907.patientregister;
+package no.ntnu.mappe2.marko19907.patientregister.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
