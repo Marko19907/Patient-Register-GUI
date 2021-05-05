@@ -31,7 +31,7 @@ import java.util.concurrent.CancellationException;
  * It is responsible for handling the events from the GUI.
  *
  * @author Marko
- * @version 03-05-2021
+ * @version 05-05-2021
  */
 public class Controller
 {
@@ -232,6 +232,7 @@ public class Controller
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
             if (result.get() == ButtonType.OK) {
+                this.patientRegister.close();
                 Platform.exit();
             }
             else {
