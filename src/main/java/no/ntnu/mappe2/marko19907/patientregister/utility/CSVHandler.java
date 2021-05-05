@@ -2,6 +2,7 @@ package no.ntnu.mappe2.marko19907.patientregister.utility;
 
 import no.ntnu.mappe2.marko19907.patientregister.model.Patient;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Class CSVHandler is responsible for reading and writing, to and from CSV files
  *
  * @author Marko
- * @version 26-04-2021
+ * @version 05-05-2021
  */
 public class CSVHandler
 {
@@ -49,9 +50,8 @@ public class CSVHandler
         List<Patient> patientList = new ArrayList<>();
 
         if (fileToRead != null) {
-            try {
-                Reader reader = Files.newBufferedReader(Paths.get(fileToRead.getAbsolutePath()));
-                Iterable<CSVRecord> records = this.getCSVFormat().withFirstRecordAsHeader().parse(reader);
+            try (Reader reader = Files.newBufferedReader(Paths.get(fileToRead.getAbsolutePath()))) {
+                CSVParser records = this.getCSVFormat().withFirstRecordAsHeader().parse(reader);
 
                 for (CSVRecord csvRecord : records) {
                     String firstName = csvRecord.get(HEADERS[0]);
@@ -68,6 +68,8 @@ public class CSVHandler
                             .withDiagnosis(diagnosis)
                             .build());
                 }
+
+                records.close();
             }
             catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("The CSV header is in an unknown format, "
