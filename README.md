@@ -14,3 +14,8 @@ The project counts towards 25% of the final grade in the subject "Programing 2".
 * [x] Create a Node factory using the factory design pattern
 * [x] Add a database as described in the task PDF
 * [x] Write JUnit tests with the Arrange, Act and Assert (AAA) pattern
+
+<br>
+
+The evaluation criteria in English can be found [here](https://github.com/Marko19907/Patient-Register-GUI/blob/main/doc/Evaluation%20criteria%20-%20English.md) <br>
+And the original evaluation criteria in Norwegian can be found [here](https://github.com/Marko19907/Patient-Register-GUI/blob/main/doc/Evaluation%20criteria%20-%20Norwegian.md)
