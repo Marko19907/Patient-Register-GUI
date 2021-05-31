@@ -35,8 +35,15 @@
                 <!-- javafx -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.3</version>
+                <version>0.0.6</version>
                 <configuration>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>Patient-Register-GUI - launcher</launcher>
+                    <jlinkImageName>Patient-Register-GUI</jlinkImageName>
+                    <jlinkZipName>Patient-Register-GUI - zip</jlinkZipName>
                     <mainClass>no.ntnu.mappe2.marko19907.patientregister/no.ntnu.mappe2.marko19907.patientregister.view.PatientRegisterGUI</mainClass>
                 </configuration>
             </plugin>
